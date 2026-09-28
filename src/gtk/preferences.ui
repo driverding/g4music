@@ -110,20 +110,13 @@
           <object class="AdwPreferencesGroup">
           <property name="title" translatable="yes">Playback</property>
             <child>
-              <object class="AdwExpanderRow" id="peak_row">
+              <object class="AdwActionRow">
                 <property name="icon-name">edit-select-symbolic</property>
                 <property name="title" translatable="yes">Show audio peak level</property>
-              	<property name="show-enable-switch">true</property>
+                <property name="activatable_widget">peak_btn</property>
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Display characters</property>
-                    <child>
-                      <object class="GtkEntry" id="peak_entry">
-                        <property name="margin-top">4</property>
-                        <property name="margin-bottom">4</property>
-                        <property name="max-length">4</property>
-                      </object>
-                    </child>
+                  <object class="GtkSwitch" id="peak_btn">
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>

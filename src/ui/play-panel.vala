@@ -29,8 +29,8 @@ namespace G4 {
         private MatrixPaintable _matrix_paintable = new MatrixPaintable ();
         private RoundPaintable _round_paintable = new RoundPaintable ();
         private bool _rotate_cover = true;
-        private bool _show_peak = true;
         private bool _size_allocated = false;
+        private uint _waveform_generation = 0;
 
         public signal void cover_changed (Music? music, CrossFadePaintable cover);
 
@@ -73,10 +73,11 @@ namespace G4 {
             app.music_changed.connect (on_music_changed);
             app.music_cover_parsed.connect (on_music_cover_parsed);
             app.player.state_changed.connect (on_player_state_changed);
+            /* the widget owns the attack/decay, frames are fed as they land */
+            app.player.spectrum_updated.connect (_play_bar.set_spectrum);
 
             var settings = app.settings;
             settings.bind ("rotate-cover", this, "rotate-cover", SettingsBindFlags.DEFAULT);
-            settings.bind ("show-peak", this, "show-peak", SettingsBindFlags.DEFAULT);
         }
 
         public bool rotate_cover {
@@ -87,16 +88,6 @@ namespace G4 {
                 _rotate_cover = value;
                 _round_paintable.ratio = value ? 0.5 : 0.05;
                 _matrix_paintable.rotation = value ? _play_bar.position * _degrees_per_second : 0;
-                on_player_state_changed (_app.player.state);
-            }
-        }
-
-        public bool show_peak {
-            get {
-                return _show_peak;
-            }
-            set {
-                _show_peak = value;
                 on_player_state_changed (_app.player.state);
             }
         }
@@ -120,7 +111,7 @@ namespace G4 {
             _play_bar.margin_end = margin_bar;
             _play_bar.margin_top = spacing;
             _play_bar.margin_bottom = spacing * 2;
-            _play_bar.on_size_changed (width - margin_bar * 2, spacing);
+            _play_bar.on_size_changed (spacing);
         }
 
         private void create_drag_source () {
@@ -166,6 +157,7 @@ namespace G4 {
             music_album.label = music?.album ?? "";
             music_artist.label = music?.artist ?? "";
             music_title.label = music?.title ?? "";
+            load_waveform.begin (music);
 
             var empty = _app.current_music == null && _app.current_list.get_n_items () == 0;
             initial_label.visible = empty;
@@ -183,6 +175,22 @@ namespace G4 {
             action_btn.sensitive = enabled;
             root.action_set_enabled (ACTION_APP + ACTION_PLAY_PAUSE, enabled);
             Window.get_default ()?.set_title (music?.get_artist_and_title () ?? _app.name);
+        }
+
+        /** Analyse the track ahead of playback so the peaks are ready when it starts. */
+        private async void load_waveform (Music? music) {
+            var generation = ++_waveform_generation;
+            if (music == null) {
+                _play_bar.clear_waveform ();
+                return;
+            }
+
+            var bands = (int) _play_bar.waveform_data_length;
+            double[]? waveform = yield Waveform.load ((!)music, bands);
+            //  drop the result when a newer track superseded this analysis
+            if (generation != _waveform_generation || waveform == null || waveform.length != bands)
+                return;
+            _play_bar.set_waveform ((!) waveform);
         }
 
         private bool on_music_folder_clicked (string uri) {
@@ -211,11 +219,10 @@ namespace G4 {
                 _scale_animation?.play ();
             }
 
-            var need_tick = _rotate_cover || _show_peak;
-            if (need_tick && playing && _tick_handler == 0) {
+            if (_rotate_cover && playing && _tick_handler == 0) {
                 _tick_last_time = get_monotonic_time ();
                 _tick_handler = add_tick_callback (on_tick_callback);
-            } else if ((!need_tick || !playing) && _tick_handler != 0) {
+            } else if ((!_rotate_cover || !playing) && _tick_handler != 0) {
                 remove_tick_callback (_tick_handler);
                 _tick_handler = 0;
             }
@@ -233,10 +240,6 @@ namespace G4 {
                 var angle = elapsed * _degrees_per_second;
                 _matrix_paintable.rotation += angle;
                 _tick_last_time = now;
-            }
-            if (_show_peak) {
-                var peak = _app.player.peak;
-                _play_bar.peak = peak;
             }
             return true;
         }

@@ -34,6 +34,8 @@ namespace G4 {
         private int _next_uri_requested = 0;
         private double _last_peak = 0;
         private LevelCalculator _peak_calculator = new LevelCalculator ();
+        private bool _spectrum_enabled = false;
+        private Spectrum? _spectrum = null;
         private Gst.State _state = Gst.State.NULL;
         private bool _seeking = false;
         private Gst.TagList? _tag_list = null;
@@ -49,6 +51,7 @@ namespace G4 {
         public signal string? next_uri_request ();
         public signal void next_uri_start ();
         public signal void state_changed (Gst.State state);
+        public signal void spectrum_updated (double[] bands);
         public signal void tag_parsed (string? uri, Gst.TagList? tags);
 
         public GstPlayer () {
@@ -203,6 +206,30 @@ namespace G4 {
             }
         }
 
+        /**
+         * Divert a copy of the played audio to a FFT band analyser. The audio
+         * itself is never touched, see setup_spectrum_tap ().
+         */
+        public void enable_spectrum (int num_bands = Spectrum.DEFAULT_BANDS) {
+            if ((_spectrum?.bands ?? 0) != num_bands)
+                _spectrum = new Spectrum (num_bands);
+            _spectrum_enabled = true;
+            if (_pipeline != null && _current_uri != null)
+                update_audio_sink ();
+            else
+                AtomicInt.set (ref _audio_sink_requested, 1);
+        }
+
+        public void disable_spectrum () {
+            if (!_spectrum_enabled)
+                return;
+            _spectrum_enabled = false;
+            if (_pipeline != null && _current_uri != null)
+                update_audio_sink ();
+            else
+                AtomicInt.set (ref _audio_sink_requested, 1);
+        }
+
         public double volume { get; set; }
 
         public void play () {
@@ -216,6 +243,7 @@ namespace G4 {
         public void seek (Gst.ClockTime position) {
             if (_pipeline != null && !_seeking) {
                 //  print ("Seek: %g -> %g\n", to_second (_position), to_second (position));
+                _spectrum?.flush ();
                 _seeking = ((!)_pipeline).seek_simple (Gst.Format.TIME, Gst.SeekFlags.ACCURATE | Gst.SeekFlags.FLUSH, (int64) position);
             }
         }
@@ -318,6 +346,7 @@ namespace G4 {
         private void on_stream_start () {
             _last_error_code = 0;
             _peak_calculator.clear ();
+            _spectrum?.flush ();
             _tag_list = null;
             _tag_parsed = false;
             if (AtomicInt.compare_and_exchange (ref _next_uri_requested, 1, 0)) {
@@ -353,28 +382,137 @@ namespace G4 {
         }
 
         private Gst.Element? setup_audio_sink () {
-            dynamic Gst.Bin? sink_bin = Gst.ElementFactory.make ("bin", "audio-sink-bin") as Gst.Bin;
+            Gst.Bin? sink_bin = Gst.ElementFactory.make ("bin", "audio-sink-bin") as Gst.Bin;
+            Gst.Element? gain = _replay_gain;
+            Gst.Element? sink = _audio_sink;
 
-            if (_replay_gain != null) {
-                (_replay_gain?.parent as Gst.Bin)?.remove_element ((!)_replay_gain);
-                sink_bin?.add ((!)_replay_gain);
+            if (gain != null) {
+                (((!) gain).parent as Gst.Bin)?.remove_element ((!) gain);
+                sink_bin?.add ((!) gain);
             }
-            print (@"Enable ReplayGain: $(_replay_gain != null)\n");
+            print (@"Enable ReplayGain: $(gain != null)\n");
 
-            if (_audio_sink != null) {
-                (_audio_sink?.parent as Gst.Bin)?.remove_element ((!)_audio_sink);
-                sink_bin?.add ((!)_audio_sink);
-                _replay_gain?.link ((!)_audio_sink);
+            if (sink != null) {
+                (((!) sink).parent as Gst.Bin)?.remove_element ((!) sink);
+                sink_bin?.add ((!) sink);
             }
-            print ("Audio Sink: %s\n", _audio_sink?.name ?? "");
+            print ("Audio Sink: %s\n", sink?.name ?? "");
 
-            Gst.Pad? static_pad = (_replay_gain ?? _audio_sink)?.get_static_pad ("sink");
-            if (static_pad != null) {
-                sink_bin?.add_pad (new Gst.GhostPad ("sink", (!)static_pad));
+            //  The analyser branch splits the audio off before it reaches the sink
+            Gst.Element? tap = _spectrum_enabled && sink != null && sink_bin != null
+                               ? setup_spectrum_tap ((!) sink_bin, (!) sink)
+                               : null;
+
+            Gst.Element? head;
+            if (tap != null) {
+                gain?.link ((!) tap);
+                head = gain ?? (!) tap;
             } else {
-                (_audio_sink?.parent as Gst.Bin)?.remove_element ((!)_audio_sink);
+                if (gain != null && sink != null)
+                    ((!) gain).link ((!) sink);
+                head = gain ?? sink;
             }
-            return static_pad != null ? sink_bin : _audio_sink;
+
+            var static_pad = head?.get_static_pad ("sink");
+            if (static_pad != null) {
+                sink_bin?.add_pad (new Gst.GhostPad ("sink", (!) static_pad));
+            } else if (sink != null) {
+                (((!) sink).parent as Gst.Bin)?.remove_element ((!) sink);
+            }
+            return static_pad != null ? sink_bin : sink;
+        }
+
+        /**
+         * Insert a tee inside the audio sink bin: the untouched main branch feeds
+         * the audio sink, the analysis branch is downmixed to mono float and read
+         * by a pad probe. Never touch the main branch, otherwise the analysis
+         * maths would end up in the speakers.
+         * Returns the head element of the branch, or null when unavailable.
+         */
+        private Gst.Element? setup_spectrum_tap (Gst.Bin bin, Gst.Element audio_sink) {
+            _spectrum?.flush ();
+
+            var tee_element = Gst.ElementFactory.make ("tee", "spectrum-tee");
+            var convert_element = Gst.ElementFactory.make ("audioconvert", "spectrum-convert");
+            var filter_element = Gst.ElementFactory.make ("capsfilter", "spectrum-caps");
+            var sink_element = Gst.ElementFactory.make ("fakesink", "spectrum-sink");
+            if (tee_element == null || convert_element == null
+                    || filter_element == null || sink_element == null)
+                return null;
+
+            /* The checks above make them usable, but Vala keeps the nullable types */
+            var tee = (!) tee_element;
+            var convert = (!) convert_element;
+            var filter = (!) filter_element;
+            var sink = (!) sink_element;
+
+            bin.add (tee);
+            bin.add (convert);
+            bin.add (filter);
+            bin.add (sink);
+
+            var caps = Gst.Caps.from_string ("audio/x-raw,format=F32LE,channels=1");
+            filter.set_property ("caps", (!) caps);
+            sink.set_property ("sync", false);
+            sink.set_property ("async", false);
+            sink.set_property ("enable-last-sample", false);
+            if (!convert.link (filter) || !filter.link (sink))
+                return null;
+
+            //  main branch: the audio as it was, straight to the sink
+            var main_pad = tee.request_pad_simple ("src_%u");
+            var main_sink_pad = audio_sink.get_static_pad ("sink");
+            if (main_pad != null && main_sink_pad != null)
+                ((!) main_pad).link ((!) main_sink_pad);
+
+            //  analysis branch: mono float for the FFT
+            var tap_pad = tee.request_pad_simple ("src_%u");
+            var tap_sink_pad = convert.get_static_pad ("sink");
+            if (tap_pad != null && tap_sink_pad != null)
+                ((!) tap_pad).link ((!) tap_sink_pad);
+
+            //  The probe reads the live buffers on the streaming thread
+            var probe_pad = sink.get_static_pad ("sink");
+            probe_pad?.add_probe (Gst.PadProbeType.BUFFER, on_spectrum_buffer);
+
+            return tee;
+        }
+
+        private Gst.PadProbeReturn on_spectrum_buffer (Gst.Pad pad, Gst.PadProbeInfo info) {
+            var spectrum = _spectrum;
+            var buffer = info.get_buffer ();
+            if (spectrum == null || buffer == null)
+                return Gst.PadProbeReturn.OK;
+            var buf = (!) buffer;
+            var analyser = (!) spectrum;
+
+            var rate = 44100;
+            var caps = pad.get_current_caps ();
+            int r = 0;
+            caps?.get_structure (0)?.get_int ("rate", out r);
+            if (r > 0)
+                rate = r;
+
+            Gst.MapInfo map_info;
+            if (!buf.map (out map_info, Gst.MapFlags.READ))
+                return Gst.PadProbeReturn.OK;
+
+            var num = (int) (map_info.size / 4);    //  mono F32LE samples
+            float[] data = new float[num];
+            float* p = (float*) map_info.data;
+            for (var i = 0; i < num; i++)
+                data[i] = p[i];
+            buf.unmap (map_info);
+
+            double[]? frame = analyser.push (data, rate);
+            if (frame != null) {
+                var bands = (!) frame;
+                Idle.add (() => {
+                    spectrum_updated (bands);
+                    return false;
+                });
+            }
+            return Gst.PadProbeReturn.OK;
         }
 
         private void update_audio_sink () {

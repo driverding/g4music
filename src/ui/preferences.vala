@@ -32,9 +32,7 @@ namespace G4 {
         [GtkChild]
         unowned Adw.ComboRow audiosink_row;
         [GtkChild]
-        unowned Adw.ExpanderRow peak_row;
-        [GtkChild]
-        unowned Gtk.Entry peak_entry;
+        unowned Gtk.Switch peak_btn;
 
         private GenericArray<Gst.ElementFactory> _audio_sinks = new GenericArray<Gst.ElementFactory> (8);
 
@@ -68,8 +66,7 @@ namespace G4 {
 
             settings.bind ("gapless-playback", gapless_btn, "active", SettingsBindFlags.DEFAULT);
 
-            settings.bind ("show-peak", peak_row, "enable_expansion", SettingsBindFlags.DEFAULT);
-            settings.bind ("peak-characters", peak_entry, "text", SettingsBindFlags.DEFAULT);
+            settings.bind ("show-peak", peak_btn, "active", SettingsBindFlags.DEFAULT);
 
             GstPlayer.get_audio_sinks (_audio_sinks);
             var sink_names = new string[_audio_sinks.length];

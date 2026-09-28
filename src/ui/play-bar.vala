@@ -1,8 +1,7 @@
 namespace G4 {
 
     public class PlayBar : Gtk.Box {
-        private Gtk.Scale _seek = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
-        private PeakBar _peak = new PeakBar ();
+        private WaveformView _waveform = new WaveformView (WaveformView.DEFAULT_DATA_LENGTH);
         private Gtk.Label _positive = new Gtk.Label ("0:00");
         private Gtk.Label _negative = new Gtk.Label ("0:00");
         private Gtk.ToggleButton _repeat = new Gtk.ToggleButton ();
@@ -13,7 +12,12 @@ namespace G4 {
         private int _duration = 0;
         private int _position = 0;
         private bool _remain_progress = false;
-        private bool _seeking = false;
+        private double _pending_ratio = -1;
+        private uint _seek_source = 0;
+
+        /* Seeks are accurate and the waveform reports continuously while it is
+           dragged, so the requests are coalesced into a single short delay. */
+        private const uint SEEK_DELAY_MS = 120;
 
         public signal void position_seeked (double position);
 
@@ -23,26 +27,17 @@ namespace G4 {
             var app = (Application) GLib.Application.get_default ();
             var player = app.player;
 
-            _seek.set_range (0, _duration);
-            _seek.halign = Gtk.Align.FILL;
-            append (_seek);
-            setup_seek_bar (player);
+            _waveform.hexpand = true;
+            append (_waveform);
+            setup_waveform (player);
+            player.enable_spectrum ((int) _waveform.data_length);
 
             var times = new Gtk.CenterBox ();
             times.baseline_position = Gtk.BaselinePosition.CENTER;
             times.halign = Gtk.Align.FILL;
             times.set_start_widget (_positive);
             times.set_end_widget (_negative);
-
-            var overlay = new Gtk.Overlay ();
-            overlay.child = times;
-            overlay.add_overlay (_peak);
-            append (overlay);
-
-            _peak.align = Pango.Alignment.CENTER;
-            _peak.halign = Gtk.Align.CENTER;
-            _peak.width_request = 168;
-            _peak.add_css_class ("dim-label");
+            append (times);
 
             _positive.halign = Gtk.Align.START;
             _positive.margin_start = 12;
@@ -54,7 +49,7 @@ namespace G4 {
             _negative.add_css_class ("dim-label");
             _negative.add_css_class ("numeric");
 
-            make_widget_clickable (_negative).pressed.connect (() => remain_progress = !remain_progress);
+            make_widget_clickable (_negative).pressed.connect (() => remain_progress = ! remain_progress);
 
             var buttons = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 16);
             buttons.halign = Gtk.Align.CENTER;
@@ -103,20 +98,13 @@ namespace G4 {
             player.state_changed.connect (on_state_changed);
 
             var settings = app.settings;
-            settings.bind ("show-peak", _peak, "visible", SettingsBindFlags.DEFAULT);
-            settings.bind ("peak-characters", _peak, "characters", SettingsBindFlags.DEFAULT);
+            settings.bind ("show-peak", _waveform, "peaks-visible", SettingsBindFlags.DEFAULT);
             settings.bind ("remain-progress", this, "remain-progress", SettingsBindFlags.DEFAULT);
-        }
-
-        public double peak {
-            set {
-                _peak.peak = value;
-            }
         }
 
         public double position {
             get {
-                return _seek.get_value ();
+                return _position;
             }
         }
 
@@ -130,21 +118,41 @@ namespace G4 {
             }
         }
 
-        public void on_size_changed (int bar_width, int bar_spacing) {
-            var text_width = int.max (_positive.get_width (), _negative.get_width ());
-            _peak.width_request = bar_width - (text_width + _positive.margin_start + _negative.margin_end) * 2;
+        /** Sample count the waveform and the live spectrum are fed with. */
+        public uint waveform_data_length {
+            get {
+                return _waveform.data_length;
+            }
+        }
+
+        /** The loudness peaks of the track that is about to play. */
+        public void set_waveform (double[] waveform) {
+            _waveform.set_waveform (waveform);
+        }
+
+        /** One live FFT frame of the audio being played. */
+        public void set_spectrum (double[] bands) {
+            _waveform.set_spectrum (bands);
+        }
+
+        /** Drop the peaks, e.g. when there is nothing loaded. */
+        public void clear_waveform () {
+            _waveform.reset ();
+        }
+
+        public void on_size_changed (int bar_spacing) {
             get_last_child ()?.set_margin_top (bar_spacing);
         }
 
         private void on_duration_changed (Gst.ClockTime duration) {
             var value = GstPlayer.to_second (duration);
             _duration = (int) (value + 0.5);
-            _seek.set_range (0, _duration);
             update_negative_label ();
         }
 
         private void on_position_changed (Gst.ClockTime position) {
-            if (!_seeking) {
+            //  The pointer owns the marker while the waveform is being dragged
+            if (_seek_source == 0) {
                 update_position (position);
             }
         }
@@ -154,37 +162,26 @@ namespace G4 {
             _play.icon_name = playing ? "media-playback-pause-symbolic" : "media-playback-start-symbolic";
         }
 
-        private void setup_seek_bar (GstPlayer player) {
-            _seek.change_value.connect ((type, value) => {
-                if (_seeking) {
-                    position_seeked (value);
-                    update_position (GstPlayer.from_second (value));
-                    return true;
-                }
-                return false;
+        private void setup_waveform (GstPlayer player) {
+            _waveform.position_changed.connect ((ratio) => {
+                if (_duration <= 0)
+                    return;
+                var pos = ratio * _duration;
+                _position = (int) (pos + 0.5);
+                _positive.label = format_time (_position);
+                update_negative_label ();
+                position_seeked (pos);
+                schedule_seek (player, ratio);
             });
+        }
 
-            // Hack that grabs the click gesture controller as mouse released event doesn't work otherwise
-            // Bug: https://gitlab.gnome.org/GNOME/gtk/-/issues/4939
-            Gtk.GestureClick? click_gesture = null;
-            var controllers = _seek.observe_controllers ();
-            for (var i = 0; i < controllers.get_n_items (); i++) {
-                var controller = controllers.get_item (i);
-                if (controller is Gtk.GestureClick) {
-                    click_gesture = (Gtk.GestureClick) controller;
-                    break;
-                }
-            }
-            if (click_gesture == null) {
-                click_gesture = new Gtk.GestureClick ();
-                _seek.add_controller ((!)click_gesture);
-            }
-            var gesture = (!)click_gesture;
-            gesture.set_button (0);
-            gesture.pressed.connect(() => _seeking = true);
-            gesture.released.connect(() => {
-                _seeking = false;
-                player.seek(GstPlayer.from_second (_seek.get_value ()));
+        private void schedule_seek (GstPlayer player, double ratio) {
+            _pending_ratio = ratio;
+            if (_seek_source != 0)
+                Source.remove (_seek_source);
+            _seek_source = run_timeout_once (SEEK_DELAY_MS, () => {
+                _seek_source = 0;
+                player.seek (GstPlayer.from_second (_pending_ratio * _duration));
             });
         }
 
@@ -203,7 +200,7 @@ namespace G4 {
                 if (_remain_progress)
                     _negative.label = "-" + format_time (_duration - _position);
             }
-            _seek.set_value (value);
+            _waveform.playing_position = _duration > 0 ? value / _duration : 0;
         }
     }
 

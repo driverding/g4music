@@ -111,8 +111,7 @@ namespace G4 {
                 foreach (var file in folders) {
                     if (recent_uri.has_prefix (file.get_uri ())) {
                         // 1.Load recent played uri if in folders
-                        _current_music = new Music (recent_uri, "", 0);
-                        _player.uri = _current_uri = recent_uri;
+                        current_music = new Music (recent_uri, "", 0);
                         _player.state = Gst.State.PAUSED;
                         break;
                     }
@@ -215,8 +214,9 @@ namespace G4 {
                     _player.uri = _current_uri = uri;
                     if (uri.length > 0)
                         _player.state = playing ? Gst.State.PLAYING : Gst.State.PAUSED;
-                    _lyrics.load.begin (uri);
                 }
+                if (uri.length > 0)
+                    _lyrics.load.begin (uri);
                 _settings.set_string ("recent-music", uri);
             }
         }

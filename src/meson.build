@@ -54,12 +54,14 @@ conf.set_quoted('VERSION', version)
 conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 configure_file(output: 'config.h', configuration: conf)
 
-c_name = meson.project_name()
-res_name = c_name + '-resources'
+c_name = app_name
+#  The resource C symbols must stay valid identifiers, so no '-' there
+res_c_name = meson.project_name ()
+res_name = res_c_name + '-resources'
 
 sources += gnome.compile_resources(res_name,
   'gresource.xml',
-  c_name: c_name
+  c_name: res_c_name
 )
 
 add_project_arguments('-I' + meson.current_source_dir () + '/gst/', language: 'c')

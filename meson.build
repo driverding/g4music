@@ -4,7 +4,11 @@ project(
   license: 'GPL3'
 )
 
-app_id = 'com.github.neithern.' + meson.project_name()
+#  A fork of g4music, renamed so that it can be installed beside the original
+app_name = 'g4music-vibe'
+app_id = 'com.github.neithern.g4music.vibe'
+#  Settings path keeps the id but with legal object path characters
+settings_path = '/com/github/neithern/g4music_vibe/'
 version = meson.project_version()
 
 gnome = import('gnome')
@@ -52,7 +56,11 @@ libm_dep = c_compiler.find_library('m', required: false)
 posix_dep = vala_compiler.find_library('posix', required: false)
 
 gee_dep = dependency('gee-0.8')
-gxml_dep = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'])
+gxml_dep = dependency('gxml-0.22', required: false)
+if not gxml_dep.found()
+  #  Otherwise use the subproject, gxml is not widely packaged yet
+  gxml_dep = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'])
+endif
 
 dependencies = [
   dependency('gstreamer-1.0'),

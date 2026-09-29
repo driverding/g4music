@@ -1,9 +1,9 @@
 {
-    "app-id": "com.github.neithern.g4music",
+    "app-id": "com.github.neithern.g4music.vibe",
     "runtime": "org.gnome.Platform",
     "runtime-version": "50",
     "sdk": "org.gnome.Sdk",
-    "command": "g4music",
+    "command": "g4music-vibe",
     "finish-args": [
         "--device=dri",
         "--share=ipc",
@@ -43,13 +43,23 @@
             ]
         },
         {
-            "name": "g4music",
+            "name": "g4music-vibe",
             "builddir": true,
             "buildsystem": "meson",
             "sources": [
                 {
                     "type": "dir",
-                    "path": "../../"
+                    "path": "../../",
+                    "deny": [
+                        ".git",
+                        ".git/*",
+                        "build",
+                        "build/*",
+                        ".flatpak-builder",
+                        ".flatpak-builder/*",
+                        "subprojects/gxml",
+                        "subprojects/gxml/*"
+                    ]
                 }
             ]
         }

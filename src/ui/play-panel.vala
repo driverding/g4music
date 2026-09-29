@@ -7,6 +7,14 @@ namespace G4 {
         [GtkChild]
         private unowned Gtk.Button back_btn;
         [GtkChild]
+        private unowned Gtk.ToggleButton lyric_btn;
+        [GtkChild]
+        private unowned Gtk.Stack page_stack;
+        [GtkChild]
+        private unowned LyricPanel lyric_panel;
+        [GtkChild]
+        private unowned Gtk.Box bar_box;
+        [GtkChild]
         private unowned Gtk.Label index_label;
         [GtkChild]
         private unowned Gtk.Box music_box;
@@ -39,13 +47,17 @@ namespace G4 {
 
             _play_bar.halign = Gtk.Align.FILL;
             _play_bar.position_seeked.connect (on_position_seeked);
-            music_box.append (_play_bar);
+            bar_box.append (_play_bar);
 
             leaflet.bind_property ("folded", back_btn, "visible", BindingFlags.SYNC_CREATE);
 
             action_btn.set_create_popup_func (() => action_btn.menu_model = create_music_action_menu ());
 
             back_btn.clicked.connect (leaflet.pop);
+
+            lyric_btn.toggled.connect (() => {
+                page_stack.visible_child_name = lyric_btn.active ? "lyric" : "music";
+            });
 
             _matrix_paintable.paintable = _round_paintable;
             _crossfade_paintable.paintable = _matrix_paintable;
@@ -70,6 +82,7 @@ namespace G4 {
             make_right_clickable (music_box, show_popover_menu);
 
             app.index_changed.connect (on_index_changed);
+            app.lyrics.lyric_found.connect (on_lyric_found);
             app.music_changed.connect (on_music_changed);
             app.music_cover_parsed.connect (on_music_cover_parsed);
             app.player.state_changed.connect (on_player_state_changed);
@@ -183,6 +196,28 @@ namespace G4 {
             action_btn.sensitive = enabled;
             root.action_set_enabled (ACTION_APP + ACTION_PLAY_PAUSE, enabled);
             Window.get_default ()?.set_title (music?.get_artist_and_title () ?? _app.name);
+
+            Lyric? found = null;
+            if (music != null) {
+                found = _app.lyrics.find (((!) music).uri);
+            }
+            update_lyric (found);
+        }
+
+        private void on_lyric_found (string uri, Lyric? lyric) {
+            var music = _app.current_music;
+            if (music == null || strcmp (uri, ((!) music).uri) != 0) {
+                return;
+            }
+            update_lyric (lyric);
+        }
+
+        private void update_lyric (Lyric? lyric) {
+            lyric_panel.lyric = lyric;
+            lyric_btn.sensitive = lyric != null;
+            if (lyric == null) {
+                lyric_btn.active = false;
+            }
         }
 
         private bool on_music_folder_clicked (string uri) {

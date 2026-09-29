@@ -220,6 +220,17 @@ namespace G4 {
             }
         }
 
+        /**
+         * Query the current position directly, which is much more frequent
+         * than the position_updated signal.
+         */
+        public Gst.ClockTime query_position () {
+            Gst.ClockTime position = Gst.CLOCK_TIME_NONE;
+            if (_pipeline != null && ((!)_pipeline).query_position (Gst.Format.TIME, out position))
+                return position;
+            return _position;
+        }
+
         private void emit_tag_parsed (uint delay = 0) {
             if (_tag_handle != 0)
                 Source.remove (_tag_handle);

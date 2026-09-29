@@ -1,5 +1,7 @@
 namespace G4 {
 
+    public const string ICON_RESOURCE_PATH = "/com/github/neithern/g4music/icons";
+
     public class Application : Adw.Application {
         private ActionHandles? _actions = null;
         private int _current_index = -1;
@@ -21,6 +23,7 @@ namespace G4 {
         private bool _store_external_changed = false;
         private Thumbnailer _thumbnailer = new Thumbnailer ();
         private bool _window_inited = false;
+        private LyricManager _lyrics = new LyricManager ();
 
         public signal void index_changed (int index, uint size);
         public signal void music_changed (Music? music);
@@ -35,6 +38,10 @@ namespace G4 {
 
         public override void startup () {
             base.startup ();
+
+            var display = Gdk.Display.get_default ();
+            if (display != null)
+                Gtk.IconTheme.get_for_display ((!) display).add_resource_path (ICON_RESOURCE_PATH);
 
             //  Must load tag cache after the app register (GLib init), to make sort works
             _loader.load_tag_cache ();
@@ -208,6 +215,7 @@ namespace G4 {
                     _player.uri = _current_uri = uri;
                     if (uri.length > 0)
                         _player.state = playing ? Gst.State.PLAYING : Gst.State.PAUSED;
+                    _lyrics.load.begin (uri);
                 }
                 _settings.set_string ("recent-music", uri);
             }
@@ -279,6 +287,12 @@ namespace G4 {
         public GstPlayer player {
             get {
                 return _player;
+            }
+        }
+
+        public LyricManager lyrics {
+            get {
+                return _lyrics;
             }
         }
 
@@ -631,6 +645,7 @@ namespace G4 {
         private async void on_player_tag_parsed (string? u, Gst.TagList? tags) {
             var uri = u ?? "";
             if (_current_music != null && _current_uri == uri) {
+                _lyrics.set_tag_list (uri, tags);
                 var music = _loader.find_cache (_current_uri) ?? (!)_current_music;
                 if (music != _current_music) {
                     _current_music = music;

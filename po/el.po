@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/neithern/g4music/issues\n"
-"POT-Creation-Date: 2025-09-11 07:33+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-29 18:41+0800\n"
 "PO-Revision-Date: 2025-09-13 00:09+0300\n"
 "Last-Translator: Dimitris Spentzos <jimspentzos2000@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.7\n"
 
-#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:273
+#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:283
 #: src/main.vala:24
 msgid "Gapless"
 msgstr "Gapless"
@@ -76,8 +76,8 @@ msgstr ""
 msgid ""
 "Group and sorts by album/artist/title, shuffle list, full-text searching."
 msgstr ""
-"Ομαδοποίηση και ταξινόμηση κατά άλμπουμ/καλλιτέχνη/τίτλο, τυχαία "
-"αναπαραγωγή λίστας, αναζήτηση πλήρους κειμένου."
+"Ομαδοποίηση και ταξινόμηση κατά άλμπουμ/καλλιτέχνη/τίτλο, τυχαία αναπαραγωγή "
+"λίστας, αναζήτηση πλήρους κειμένου."
 
 #: data/app.metainfo.xml.in:31
 msgid ""
@@ -90,8 +90,8 @@ msgstr ""
 #: data/app.metainfo.xml.in:32
 msgid "Gaussian blurred cover as background, follows GNOME light/dark mode."
 msgstr ""
-"Γκαουσιανό θόλωμα εξωφύλλου ως εφέ παρασκηνίου, προσαρμογή στην "
-"ανοιχτόχρωμη/σκουρόχρωμη λειτουργία του GNOME."
+"Γκαουσιανό θόλωμα εξωφύλλου ως εφέ παρασκηνίου, προσαρμογή στην ανοιχτόχρωμη/"
+"σκουρόχρωμη λειτουργία του GNOME."
 
 #: data/app.metainfo.xml.in:33
 msgid ""
@@ -216,6 +216,10 @@ msgstr "Αποθήκευση λίστας"
 msgid "Back"
 msgstr "Πϊσω"
 
+#: src/gtk/play-panel.ui:34
+msgid "Lyrics"
+msgstr ""
+
 #: src/gtk/preferences.ui:10
 msgid "General"
 msgstr "Γενικά"
@@ -236,7 +240,7 @@ msgstr "Προβολή πλέγματος για καλλιτέχνες/άλμπ
 msgid "Single click to activate item"
 msgstr "Ενεργοποίηση στοιχείων με ένα κλικ"
 
-#: src/gtk/preferences.ui:56 src/application.vala:434
+#: src/gtk/preferences.ui:56 src/application.vala:450
 msgid "Keep playing after window closed"
 msgstr "Συνέχεια αναπαραγωγής μετά το κλείσιμο του παραθύρου"
 
@@ -268,23 +272,19 @@ msgstr "Αναπαραγωγή"
 msgid "Show audio peak level"
 msgstr "Εμφάνιση επιπέδου κορύφωσης ήχου"
 
-#: src/gtk/preferences.ui:119
-msgid "Display characters"
-msgstr "Εμφανιζόμενοι χαρακτήρες"
-
-#: src/gtk/preferences.ui:134
+#: src/gtk/preferences.ui:127
 msgid "Rotate album cover"
 msgstr "Περιστροφή εξώφυλλου άλμπουμ"
 
-#: src/gtk/preferences.ui:146
+#: src/gtk/preferences.ui:139
 msgid "Enable gapless playback"
 msgstr "Ενεργοποίηση απρόσκοπτης αναπαραγωγής"
 
-#: src/gtk/preferences.ui:158
+#: src/gtk/preferences.ui:151
 msgid "Normalize volume with ReplayGain"
 msgstr "Κανονικοποίηση έντασης με το ReplayGain"
 
-#: src/gtk/preferences.ui:164
+#: src/gtk/preferences.ui:157
 msgid "Prefer audio sink of GStreamer"
 msgstr "Προτιμώμενη διεπαφή ήχου για το GStreamer"
 
@@ -340,7 +340,7 @@ msgstr "Συντομεύσεις π_ληκτρολογίου"
 msgid "_About"
 msgstr "Πλ_ηροφορίες"
 
-#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:66
+#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:64
 msgid "Album"
 msgstr "Άλμπουμ"
 
@@ -376,19 +376,19 @@ msgstr "Επιτυχής εξαγωγή εξώφυλλου"
 msgid "Export cover failed"
 msgstr "Αποτυχία εξαγωγής εξώφυλλου"
 
-#: src/application.vala:346
+#: src/application.vala:362
 msgid "Save playlist failed"
 msgstr "Αποτυχία αποθήκευσης λίστας αναπαραγωγής"
 
-#: src/application.vala:470
+#: src/application.vala:486
 msgid "Playlist Files"
 msgstr "Αρχεία λιστών αναπαραγωγής"
 
-#: src/application.vala:485
+#: src/application.vala:501
 msgid "Save playlist successfully"
 msgstr "Επιτυχής αποθήκευση λίστας αναπαραγωγής"
 
-#: src/application.vala:620
+#: src/application.vala:636
 msgid "Keep playing"
 msgstr "Συνέχεια αναπαραγωγής"
 
@@ -468,15 +468,15 @@ msgstr "_Τυχαία αναπαραγωγή"
 msgid "Show List _File"
 msgstr "Εμφάνιση _αρχείου λίστας"
 
-#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:63
+#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:75
 msgid "Search Title"
 msgstr "Αναζήτηση τίτλου"
 
-#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:61
+#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:73
 msgid "Search Album"
 msgstr "Αναζήτηση άλμπουμ"
 
-#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:62
+#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:74
 msgid "Search Artist"
 msgstr "Αναζήτηση καλλιτέχνη"
 
@@ -497,28 +497,28 @@ msgid "Show Music _File"
 msgstr "Εμφάνιση _αρχείου μουσικής"
 
 #. Translators: single loop the current music
-#: src/ui/play-bar.vala:72
+#: src/ui/play-bar.vala:67
 msgid "Single Loop"
 msgstr "Επανάληψη κομματιού"
 
-#: src/ui/play-bar.vala:82
+#: src/ui/play-bar.vala:77
 msgid "Play Previous"
 msgstr "Αναπαραγωγή προηγούμενου"
 
 #. media-playback-pause-symbolic
-#: src/ui/play-bar.vala:88
+#: src/ui/play-bar.vala:83
 msgid "Play/Pause"
 msgstr "Αναπαραγωγή/παύση"
 
-#: src/ui/play-bar.vala:95
+#: src/ui/play-bar.vala:90
 msgid "Play Next"
 msgstr "Αναπαραγωγή επόμενου"
 
-#: src/ui/play-panel.vala:56 src/ui/store-panel.vala:84
+#: src/ui/play-panel.vala:68 src/ui/store-panel.vala:84
 msgid "Playing"
 msgstr "Αναπαραγωγή"
 
-#: src/ui/play-panel.vala:266
+#: src/ui/play-panel.vala:304
 msgid ""
 "Drag and drop music files here,\n"
 "or change music location: "
@@ -535,19 +535,19 @@ msgstr "Νέα λίστα"
 msgid "No playlist found in %s"
 msgstr "Δεν βρέθηκε λίστα αναπαραγωγής στον φάκελο «%s»"
 
-#: src/ui/preferences.vala:44 src/ui/preferences.vala:66
+#: src/ui/preferences.vala:42 src/ui/preferences.vala:64
 msgid "Never"
 msgstr "Ποτέ"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Always"
 msgstr "Πάντα"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Art Only"
 msgstr "Μόνο με εξώφυλλο"
 
-#: src/ui/preferences.vala:66
+#: src/ui/preferences.vala:64
 msgid "Track"
 msgstr "Κομμάτι"
 
@@ -573,7 +573,7 @@ msgstr "Αντιγραφή"
 msgid "Volume %d%%"
 msgstr "Ένταση: %d%%"
 
-#: src/ui/window.vala:126
+#: src/ui/window.vala:127
 msgid "Show"
 msgstr "Εμφάνιση"
 
@@ -584,3 +584,6 @@ msgstr "Άγνωστο άλμπουμ"
 #: src/utils/music.vala:3
 msgid "Unknown Artist"
 msgstr "Άγνωστος καλλιτέχνης"
+
+#~ msgid "Display characters"
+#~ msgstr "Εμφανιζόμενοι χαρακτήρες"

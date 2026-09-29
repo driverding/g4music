@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: g4music master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/neithern/g4music/issues\n"
-"POT-Creation-Date: 2024-11-30 13:45+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-29 18:41+0800\n"
 "PO-Revision-Date: 2024-12-25 18:49+0100\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
@@ -18,20 +18,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Gtranslator 47.0\n"
 
-#: data/app.desktop.in:3 data/app.metainfo.xml.in:4 src/application.vala:273
+#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:283
 #: src/main.vala:24
 msgid "Gapless"
 msgstr "Gapless"
 
-#: data/app.desktop.in:4
+#: data/app.desktop.in:3
 msgid "Music Player"
 msgstr "Програма за музика"
 
-#: data/app.desktop.in:5 data/app.metainfo.xml.in:7
+#: data/app.desktop.in:4 data/app.metainfo.xml.in:7
 msgid "Play your music elegantly"
 msgstr "Елегантно си слушайте музика"
 
-#: data/app.desktop.in:12
+#: data/app.desktop.in:11
 msgid "music;sound;player;media;audio;playlist;"
 msgstr ""
 "музика;музикално устройство;медия;звук;аудио;списък с "
@@ -212,10 +212,14 @@ msgctxt "shortcut window"
 msgid "Save List"
 msgstr "Запазване на списъка"
 
-#: src/gtk/play-panel.ui:16 src/ui/music-list.vala:632
-#: src/ui/store-panel.vala:421
+#: src/gtk/play-panel.ui:16 src/ui/music-list.vala:626
+#: src/ui/store-panel.vala:420
 msgid "Back"
 msgstr "Назад"
+
+#: src/gtk/play-panel.ui:34
+msgid "Lyrics"
+msgstr ""
 
 #: src/gtk/preferences.ui:10
 msgid "General"
@@ -237,7 +241,7 @@ msgstr "Мрежов изглед за изпълнители/албуми"
 msgid "Single click to activate item"
 msgstr "Единично натискане за включване на елемент"
 
-#: src/gtk/preferences.ui:56 src/application.vala:434
+#: src/gtk/preferences.ui:56 src/application.vala:450
 msgid "Keep playing after window closed"
 msgstr "Продължаване на изпълняването след затваряне"
 
@@ -269,23 +273,19 @@ msgstr "Изпълнение"
 msgid "Show audio peak level"
 msgstr "Показване на пиковото ниво на звука"
 
-#: src/gtk/preferences.ui:119
-msgid "Display characters"
-msgstr "Показване на знаците"
-
-#: src/gtk/preferences.ui:134
+#: src/gtk/preferences.ui:127
 msgid "Rotate album cover"
 msgstr "Обръщане на обложката на албума"
 
-#: src/gtk/preferences.ui:146
+#: src/gtk/preferences.ui:139
 msgid "Enable gapless playback"
 msgstr "Включване на изпълняване без интервали"
 
-#: src/gtk/preferences.ui:158
+#: src/gtk/preferences.ui:151
 msgid "Normalize volume with ReplayGain"
 msgstr "Нормализиране на силата на звука с регулиране"
 
-#: src/gtk/preferences.ui:164
+#: src/gtk/preferences.ui:157
 msgid "Prefer audio sink of GStreamer"
 msgstr "Предпочитане на GStreamer аудио приемник"
 
@@ -341,7 +341,7 @@ msgstr "_Клавишни комбинации"
 msgid "_About"
 msgstr "_Относно"
 
-#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:66
+#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:64
 msgid "Album"
 msgstr "Албум"
 
@@ -377,28 +377,24 @@ msgstr "Обложката е успешно изнесена"
 msgid "Export cover failed"
 msgstr "Обложката не може да бъде изнесена"
 
-#: src/application.vala:346
+#: src/application.vala:362
 msgid "Save playlist failed"
 msgstr "Списъкът не може да бъде запазен"
 
-#: src/application.vala:470
+#: src/application.vala:486
 msgid "Playlist Files"
 msgstr "Файлове на списъка"
 
-#: src/application.vala:485
+#: src/application.vala:501
 msgid "Save playlist successfully"
 msgstr "Списъкът е успешно запазен"
 
-#: src/application.vala:620
+#: src/application.vala:636
 msgid "Keep playing"
 msgstr "Продължаване"
 
-#: src/ui/dialogs.vala:51
-msgid "A fast, fluent, light weight music player written in GTK4."
-msgstr "Бърза, адаптивна и лека програма за музика, написана на GTK4."
-
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/ui/dialogs.vala:53
+#: src/ui/dialogs.vala:52
 msgid "translator-credits"
 msgstr ""
 "Twlvnn Kraftwerk &lt;<a "
@@ -411,64 +407,64 @@ msgstr ""
 "Докладвайте за грешки в превода в <a href='https://fsa-bg.org/project/gtp/"
 "newticket'>съответния раздел</a>."
 
-#: src/ui/dialogs.vala:100 src/ui/dialogs.vala:112
+#: src/ui/dialogs.vala:98 src/ui/dialogs.vala:110
 msgid "No"
 msgstr "Не"
 
-#: src/ui/dialogs.vala:101 src/ui/dialogs.vala:112
+#: src/ui/dialogs.vala:99 src/ui/dialogs.vala:110
 msgid "Yes"
 msgstr "Да"
 
-#: src/ui/music-list.vala:276
+#: src/ui/music-list.vala:270
 msgid "Playlist is modified, save it?"
 msgstr "Списъкът е променен, искате ли да го запазите?"
 
 #. Translators: Play this music at next position of current playing music
-#: src/ui/music-list.vala:405 src/ui/music-list.vala:421
+#: src/ui/music-list.vala:399 src/ui/music-list.vala:415
 #: src/ui/music-widgets.vala:277 src/ui/music-widgets.vala:299
 msgid "Play at _Next"
 msgstr "Изпълняване при _следваща"
 
-#: src/ui/music-list.vala:407 src/ui/music-list.vala:423
+#: src/ui/music-list.vala:401 src/ui/music-list.vala:417
 #: src/ui/music-widgets.vala:278 src/ui/music-widgets.vala:300
 msgid "Add to _Queue"
 msgstr "Добавяне в _опашката"
 
-#: src/ui/music-list.vala:408 src/ui/music-widgets.vala:279
+#: src/ui/music-list.vala:402 src/ui/music-widgets.vala:279
 #: src/ui/music-widgets.vala:301 src/ui/music-widgets.vala:320
 msgid "Add to _Playlist…"
 msgstr "Добавяне в _списък…"
 
-#: src/ui/music-list.vala:409 src/ui/music-list.vala:427
+#: src/ui/music-list.vala:403 src/ui/music-list.vala:421
 msgid "_Remove"
 msgstr "_Премахване"
 
-#: src/ui/music-list.vala:428 src/ui/music-widgets.vala:286
+#: src/ui/music-list.vala:422 src/ui/music-widgets.vala:286
 msgid "_Move to Trash"
 msgstr "_Преместване в кошчето"
 
-#: src/ui/music-list.vala:636
+#: src/ui/music-list.vala:630
 msgid "Select All"
 msgstr "Избор на всички"
 
-#: src/ui/music-list.vala:653
+#: src/ui/music-list.vala:647
 msgid "Play at Next"
 msgstr "Изпълняване при следваща"
 
-#: src/ui/music-list.vala:660
+#: src/ui/music-list.vala:654
 msgid "Add to Queue"
 msgstr "Добавяне в опашката"
 
-#: src/ui/music-list.vala:667 src/ui/playlist-dialog.vala:19
+#: src/ui/music-list.vala:661 src/ui/playlist-dialog.vala:19
 msgid "Add to Playlist"
 msgstr "Добавяне в списък"
 
-#: src/ui/music-list.vala:674
+#: src/ui/music-list.vala:668
 msgid "Remove"
 msgstr "Премахване"
 
 #: src/ui/music-widgets.vala:274 src/ui/music-widgets.vala:296
-#: src/ui/store-panel.vala:429
+#: src/ui/store-panel.vala:428
 msgid "Play"
 msgstr "Изпълнение"
 
@@ -480,15 +476,15 @@ msgstr "_Случайна песен"
 msgid "Show List _File"
 msgstr "Показване на _файла на списъка"
 
-#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:60
+#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:75
 msgid "Search Title"
 msgstr "Търсене на заглавие"
 
-#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:58
+#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:73
 msgid "Search Album"
 msgstr "Търсене на албум"
 
-#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:59
+#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:74
 msgid "Search Artist"
 msgstr "Търсене на изпълнител"
 
@@ -509,24 +505,28 @@ msgid "Show Music _File"
 msgstr "Показване на музикалния _файл"
 
 #. Translators: single loop the current music
-#: src/ui/play-bar.vala:72
+#: src/ui/play-bar.vala:67
 msgid "Single Loop"
 msgstr "Повторение"
 
-#: src/ui/play-bar.vala:82
+#: src/ui/play-bar.vala:77
 msgid "Play Previous"
 msgstr "Предишна"
 
 #. media-playback-pause-symbolic
-#: src/ui/play-bar.vala:88
+#: src/ui/play-bar.vala:83
 msgid "Play/Pause"
 msgstr "Изпълнение/Пауза"
 
-#: src/ui/play-bar.vala:95
+#: src/ui/play-bar.vala:90
 msgid "Play Next"
 msgstr "Следваща"
 
-#: src/ui/play-panel.vala:263
+#: src/ui/play-panel.vala:68 src/ui/store-panel.vala:84
+msgid "Playing"
+msgstr "В момента слушате"
+
+#: src/ui/play-panel.vala:304
 msgid ""
 "Drag and drop music files here,\n"
 "or change music location: "
@@ -538,30 +538,26 @@ msgstr ""
 msgid "New Playlist"
 msgstr "Нов списък"
 
-#: src/ui/playlist-dialog.vala:98 src/ui/store-panel.vala:703
+#: src/ui/playlist-dialog.vala:98 src/ui/store-panel.vala:712
 #, c-format
 msgid "No playlist found in %s"
 msgstr "Няма намерен списък за песни в %s"
 
-#: src/ui/preferences.vala:44 src/ui/preferences.vala:66
+#: src/ui/preferences.vala:42 src/ui/preferences.vala:64
 msgid "Never"
 msgstr "Никога"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Always"
 msgstr "Винаги"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Art Only"
 msgstr "Само обложка"
 
-#: src/ui/preferences.vala:66
+#: src/ui/preferences.vala:64
 msgid "Track"
 msgstr "Песен"
-
-#: src/ui/store-panel.vala:84
-msgid "Playing"
-msgstr "В момента слушате"
 
 #: src/ui/store-panel.vala:89
 msgid "Artists"
@@ -585,7 +581,7 @@ msgstr "Копиране"
 msgid "Volume %d%%"
 msgstr "Сила на звука %d%%"
 
-#: src/ui/window.vala:119
+#: src/ui/window.vala:127
 msgid "Show"
 msgstr "Показване"
 
@@ -596,3 +592,9 @@ msgstr "Неизвестен албум"
 #: src/utils/music.vala:3
 msgid "Unknown Artist"
 msgstr "Неизвестен автор"
+
+#~ msgid "Display characters"
+#~ msgstr "Показване на знаците"
+
+#~ msgid "A fast, fluent, light weight music player written in GTK4."
+#~ msgstr "Бърза, адаптивна и лека програма за музика, написана на GTK4."

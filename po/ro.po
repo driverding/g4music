@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: g4music master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/neithern/g4music/issues\n"
-"POT-Creation-Date: 2025-11-16 06:55+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-29 18:41+0800\n"
 "PO-Revision-Date: 2026-04-03 13:20+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "20)) ? 1 : 2);\n"
 "X-Generator: Gtranslator 48.0\n"
 
-#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:273
+#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:283
 #: src/main.vala:24
 msgid "Gapless"
 msgstr "Gapless"
@@ -219,6 +219,10 @@ msgstr "Salvează lista"
 msgid "Back"
 msgstr "Înapoi"
 
+#: src/gtk/play-panel.ui:34
+msgid "Lyrics"
+msgstr ""
+
 #: src/gtk/preferences.ui:10
 msgid "General"
 msgstr "Generale"
@@ -239,7 +243,7 @@ msgstr "Afișare tip grilă pentru artiști/albume"
 msgid "Single click to activate item"
 msgstr "Un clic pentru a activa elementul"
 
-#: src/gtk/preferences.ui:56 src/application.vala:434
+#: src/gtk/preferences.ui:56 src/application.vala:450
 msgid "Keep playing after window closed"
 msgstr "Continuă redarea după ce s-a închis fereastra"
 
@@ -271,23 +275,19 @@ msgstr "Redare"
 msgid "Show audio peak level"
 msgstr "Arată nivelul maxim al sunetului"
 
-#: src/gtk/preferences.ui:119
-msgid "Display characters"
-msgstr "Afișează caracterele"
-
-#: src/gtk/preferences.ui:134
+#: src/gtk/preferences.ui:127
 msgid "Rotate album cover"
 msgstr "Rotește coperta albumului"
 
-#: src/gtk/preferences.ui:146
+#: src/gtk/preferences.ui:139
 msgid "Enable gapless playback"
 msgstr "Activează redarea fără întrerupere"
 
-#: src/gtk/preferences.ui:158
+#: src/gtk/preferences.ui:151
 msgid "Normalize volume with ReplayGain"
 msgstr "Normalizează volumul cu ReplayGain"
 
-#: src/gtk/preferences.ui:164
+#: src/gtk/preferences.ui:157
 msgid "Prefer audio sink of GStreamer"
 msgstr "Preferă ieșirea audio GStreamer"
 
@@ -343,7 +343,7 @@ msgstr "Scur_tături"
 msgid "_About"
 msgstr "_Despre"
 
-#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:66
+#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:64
 msgid "Album"
 msgstr "Album"
 
@@ -379,19 +379,19 @@ msgstr "Copertă exportată cu succes"
 msgid "Export cover failed"
 msgstr "Nu s-a putut exporta coperta"
 
-#: src/application.vala:346
+#: src/application.vala:362
 msgid "Save playlist failed"
 msgstr "Nu s-a putut salva lista de redare"
 
-#: src/application.vala:470
+#: src/application.vala:486
 msgid "Playlist Files"
 msgstr "Fișiere Listă de redare"
 
-#: src/application.vala:485
+#: src/application.vala:501
 msgid "Save playlist successfully"
 msgstr "Listă de redare salvată cu succes"
 
-#: src/application.vala:620
+#: src/application.vala:636
 msgid "Keep playing"
 msgstr "Continuă redarea"
 
@@ -471,15 +471,15 @@ msgstr "_Redare aleatorie"
 msgid "Show List _File"
 msgstr "Arată _fișierul listei"
 
-#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:63
+#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:75
 msgid "Search Title"
 msgstr "Caută titlul"
 
-#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:61
+#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:73
 msgid "Search Album"
 msgstr "Caută albumul"
 
-#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:62
+#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:74
 msgid "Search Artist"
 msgstr "Caută artistul"
 
@@ -500,28 +500,28 @@ msgid "Show Music _File"
 msgstr "Arată _fișierul cu muzică"
 
 #. Translators: single loop the current music
-#: src/ui/play-bar.vala:72
+#: src/ui/play-bar.vala:67
 msgid "Single Loop"
 msgstr "Repetă melodia"
 
-#: src/ui/play-bar.vala:82
+#: src/ui/play-bar.vala:77
 msgid "Play Previous"
 msgstr "Redă precedenta"
 
 #. media-playback-pause-symbolic
-#: src/ui/play-bar.vala:88
+#: src/ui/play-bar.vala:83
 msgid "Play/Pause"
 msgstr "Redare/Pauză"
 
-#: src/ui/play-bar.vala:95
+#: src/ui/play-bar.vala:90
 msgid "Play Next"
 msgstr "Redă următoarea"
 
-#: src/ui/play-panel.vala:56 src/ui/store-panel.vala:84
+#: src/ui/play-panel.vala:68 src/ui/store-panel.vala:84
 msgid "Playing"
 msgstr "Redare"
 
-#: src/ui/play-panel.vala:266
+#: src/ui/play-panel.vala:304
 msgid ""
 "Drag and drop music files here,\n"
 "or change music location: "
@@ -538,19 +538,19 @@ msgstr "Listă de redare nouă"
 msgid "No playlist found in %s"
 msgstr "Nicio listă de redare în %s"
 
-#: src/ui/preferences.vala:44 src/ui/preferences.vala:66
+#: src/ui/preferences.vala:42 src/ui/preferences.vala:64
 msgid "Never"
 msgstr "Niciodată"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Always"
 msgstr "Mereu"
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Art Only"
 msgstr "Doar coperta"
 
-#: src/ui/preferences.vala:66
+#: src/ui/preferences.vala:64
 msgid "Track"
 msgstr "Titlul"
 
@@ -576,7 +576,7 @@ msgstr "Copiază"
 msgid "Volume %d%%"
 msgstr "Volum %d%%"
 
-#: src/ui/window.vala:126
+#: src/ui/window.vala:127
 msgid "Show"
 msgstr "Arată"
 
@@ -587,3 +587,6 @@ msgstr "Album necunoscut"
 #: src/utils/music.vala:3
 msgid "Unknown Artist"
 msgstr "Artist necunoscut"
+
+#~ msgid "Display characters"
+#~ msgstr "Afișează caracterele"

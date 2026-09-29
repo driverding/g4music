@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: g4music\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-11 09:34+0800\n"
+"POT-Creation-Date: 2026-09-29 18:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/app.desktop.in:3 data/app.metainfo.xml.in:4 src/application.vala:277
+#: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:283
 #: src/main.vala:24
 msgid "Gapless"
 msgstr ""
 
-#: data/app.desktop.in:4
+#: data/app.desktop.in:3
 msgid "Music Player"
 msgstr ""
 
-#: data/app.desktop.in:5 data/app.metainfo.xml.in:7
+#: data/app.desktop.in:4 data/app.metainfo.xml.in:7
 msgid "Play your music elegantly"
 msgstr ""
 
-#: data/app.desktop.in:12
+#: data/app.desktop.in:11
 msgid "music;sound;player;media;audio;playlist;"
 msgstr ""
 
@@ -193,9 +193,13 @@ msgctxt "shortcut window"
 msgid "Save List"
 msgstr ""
 
-#: src/gtk/play-panel.ui:16 src/ui/music-list.vala:629
-#: src/ui/store-panel.vala:421
+#: src/gtk/play-panel.ui:16 src/ui/music-list.vala:626
+#: src/ui/store-panel.vala:420
 msgid "Back"
+msgstr ""
+
+#: src/gtk/play-panel.ui:34
+msgid "Lyrics"
 msgstr ""
 
 #: src/gtk/preferences.ui:10
@@ -218,7 +222,7 @@ msgstr ""
 msgid "Single click to activate item"
 msgstr ""
 
-#: src/gtk/preferences.ui:56 src/application.vala:425
+#: src/gtk/preferences.ui:56 src/application.vala:450
 msgid "Keep playing after window closed"
 msgstr ""
 
@@ -250,99 +254,95 @@ msgstr ""
 msgid "Show audio peak level"
 msgstr ""
 
-#: src/gtk/preferences.ui:119
-msgid "Display characters"
-msgstr ""
-
-#: src/gtk/preferences.ui:134
+#: src/gtk/preferences.ui:127
 msgid "Rotate album cover"
 msgstr ""
 
-#: src/gtk/preferences.ui:146
+#: src/gtk/preferences.ui:139
 msgid "Enable gapless playback"
 msgstr ""
 
-#: src/gtk/preferences.ui:158
+#: src/gtk/preferences.ui:151
 msgid "Normalize volume with ReplayGain"
 msgstr ""
 
-#: src/gtk/preferences.ui:164
+#: src/gtk/preferences.ui:157
 msgid "Prefer audio sink of GStreamer"
 msgstr ""
 
-#: src/gtk/store-panel.ui:22
+#: src/gtk/store-panel.ui:23
 msgid "Main Menu"
 msgstr ""
 
-#: src/gtk/store-panel.ui:29 src/ui/playlist-dialog.vala:36
+#: src/gtk/store-panel.ui:30 src/ui/playlist-dialog.vala:36
 msgid "Search"
 msgstr ""
 
-#: src/gtk/store-panel.ui:39
+#: src/gtk/store-panel.ui:40
 msgid "Sort By"
 msgstr ""
 
-#: src/gtk/store-panel.ui:70
+#: src/gtk/store-panel.ui:71
 msgid "_Color Scheme"
 msgstr ""
 
-#: src/gtk/store-panel.ui:72
+#: src/gtk/store-panel.ui:73
 msgid "_System"
 msgstr ""
 
-#: src/gtk/store-panel.ui:77
+#: src/gtk/store-panel.ui:78
 msgid "_Light"
 msgstr ""
 
-#: src/gtk/store-panel.ui:82
+#: src/gtk/store-panel.ui:83
 msgid "_Dark"
 msgstr ""
 
-#: src/gtk/store-panel.ui:89
+#: src/gtk/store-panel.ui:90
 msgid "_Reload Library"
 msgstr ""
 
-#: src/gtk/store-panel.ui:93
+#: src/gtk/store-panel.ui:94
 msgid "_Multiple Select"
 msgstr ""
 
-#: src/gtk/store-panel.ui:97
+#: src/gtk/store-panel.ui:98
 msgid "_Save List"
 msgstr ""
 
-#: src/gtk/store-panel.ui:103
+#: src/gtk/store-panel.ui:104
 msgid "_Preferences"
 msgstr ""
 
-#: src/gtk/store-panel.ui:107
+#: src/gtk/store-panel.ui:108
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/gtk/store-panel.ui:111
+#: src/gtk/store-panel.ui:112
 msgid "_About"
 msgstr ""
 
-#: src/gtk/store-panel.ui:120 src/ui/preferences.vala:66
+#: src/gtk/store-panel.ui:121 src/ui/preferences.vala:64
 msgid "Album"
 msgstr ""
 
-#: src/gtk/store-panel.ui:125
+#: src/gtk/store-panel.ui:126
 msgid "Artist"
 msgstr ""
 
-#: src/gtk/store-panel.ui:130
+#: src/gtk/store-panel.ui:131
 msgid "Artist/Album"
 msgstr ""
 
-#: src/gtk/store-panel.ui:135
+#: src/gtk/store-panel.ui:136
 msgid "Title"
 msgstr ""
 
-#: src/gtk/store-panel.ui:140
+#: src/gtk/store-panel.ui:141
 msgid "Recent"
 msgstr ""
 
-#: src/gtk/store-panel.ui:145
+#: src/gtk/store-panel.ui:146
 msgid "Shuffle"
 msgstr ""
 
@@ -358,89 +358,85 @@ msgstr ""
 msgid "Export cover failed"
 msgstr ""
 
-#: src/application.vala:350
+#: src/application.vala:362
 msgid "Save playlist failed"
 msgstr ""
 
-#: src/application.vala:447
+#: src/application.vala:486
 msgid "Playlist Files"
 msgstr ""
 
-#: src/application.vala:461
+#: src/application.vala:501
 msgid "Save playlist successfully"
 msgstr ""
 
-#: src/application.vala:597
+#: src/application.vala:636
 msgid "Keep playing"
 msgstr ""
 
-#: src/ui/dialogs.vala:51
-msgid "A fast, fluent, light weight music player written in GTK4."
-msgstr ""
-
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/ui/dialogs.vala:53
+#: src/ui/dialogs.vala:52
 msgid "translator-credits"
 msgstr ""
 
-#: src/ui/dialogs.vala:99 src/ui/dialogs.vala:111
+#: src/ui/dialogs.vala:98 src/ui/dialogs.vala:110
 msgid "No"
 msgstr ""
 
-#: src/ui/dialogs.vala:100 src/ui/dialogs.vala:111
+#: src/ui/dialogs.vala:99 src/ui/dialogs.vala:110
 msgid "Yes"
 msgstr ""
 
-#: src/ui/music-list.vala:272
+#: src/ui/music-list.vala:270
 msgid "Playlist is modified, save it?"
 msgstr ""
 
 #. Translators: Play this music at next position of current playing music
-#: src/ui/music-list.vala:402 src/ui/music-list.vala:418
+#: src/ui/music-list.vala:399 src/ui/music-list.vala:415
 #: src/ui/music-widgets.vala:277 src/ui/music-widgets.vala:299
 msgid "Play at _Next"
 msgstr ""
 
-#: src/ui/music-list.vala:404 src/ui/music-list.vala:420
+#: src/ui/music-list.vala:401 src/ui/music-list.vala:417
 #: src/ui/music-widgets.vala:278 src/ui/music-widgets.vala:300
 msgid "Add to _Queue"
 msgstr ""
 
-#: src/ui/music-list.vala:405 src/ui/music-widgets.vala:279
+#: src/ui/music-list.vala:402 src/ui/music-widgets.vala:279
 #: src/ui/music-widgets.vala:301 src/ui/music-widgets.vala:320
 msgid "Add to _Playlist…"
 msgstr ""
 
-#: src/ui/music-list.vala:406 src/ui/music-list.vala:424
+#: src/ui/music-list.vala:403 src/ui/music-list.vala:421
 msgid "_Remove"
 msgstr ""
 
-#: src/ui/music-list.vala:425 src/ui/music-widgets.vala:286
+#: src/ui/music-list.vala:422 src/ui/music-widgets.vala:286
 msgid "_Move to Trash"
 msgstr ""
 
-#: src/ui/music-list.vala:633
+#: src/ui/music-list.vala:630
 msgid "Select All"
 msgstr ""
 
-#: src/ui/music-list.vala:650
+#: src/ui/music-list.vala:647
 msgid "Play at Next"
 msgstr ""
 
-#: src/ui/music-list.vala:657
+#: src/ui/music-list.vala:654
 msgid "Add to Queue"
 msgstr ""
 
-#: src/ui/music-list.vala:664 src/ui/playlist-dialog.vala:19
+#: src/ui/music-list.vala:661 src/ui/playlist-dialog.vala:19
 msgid "Add to Playlist"
 msgstr ""
 
-#: src/ui/music-list.vala:671
+#: src/ui/music-list.vala:668
 msgid "Remove"
 msgstr ""
 
 #: src/ui/music-widgets.vala:274 src/ui/music-widgets.vala:296
-#: src/ui/store-panel.vala:429
+#: src/ui/store-panel.vala:428
 msgid "Play"
 msgstr ""
 
@@ -452,15 +448,15 @@ msgstr ""
 msgid "Show List _File"
 msgstr ""
 
-#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:60
+#: src/ui/music-widgets.vala:308 src/ui/play-panel.vala:75
 msgid "Search Title"
 msgstr ""
 
-#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:58
+#: src/ui/music-widgets.vala:309 src/ui/play-panel.vala:73
 msgid "Search Album"
 msgstr ""
 
-#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:59
+#: src/ui/music-widgets.vala:310 src/ui/play-panel.vala:74
 msgid "Search Artist"
 msgstr ""
 
@@ -481,24 +477,28 @@ msgid "Show Music _File"
 msgstr ""
 
 #. Translators: single loop the current music
-#: src/ui/play-bar.vala:72
+#: src/ui/play-bar.vala:67
 msgid "Single Loop"
 msgstr ""
 
-#: src/ui/play-bar.vala:82
+#: src/ui/play-bar.vala:77
 msgid "Play Previous"
 msgstr ""
 
 #. media-playback-pause-symbolic
-#: src/ui/play-bar.vala:88
+#: src/ui/play-bar.vala:83
 msgid "Play/Pause"
 msgstr ""
 
-#: src/ui/play-bar.vala:95
+#: src/ui/play-bar.vala:90
 msgid "Play Next"
 msgstr ""
 
-#: src/ui/play-panel.vala:255
+#: src/ui/play-panel.vala:68 src/ui/store-panel.vala:84
+msgid "Playing"
+msgstr ""
+
+#: src/ui/play-panel.vala:304
 msgid ""
 "Drag and drop music files here,\n"
 "or change music location: "
@@ -508,29 +508,25 @@ msgstr ""
 msgid "New Playlist"
 msgstr ""
 
-#: src/ui/playlist-dialog.vala:98 src/ui/store-panel.vala:692
+#: src/ui/playlist-dialog.vala:98 src/ui/store-panel.vala:712
 #, c-format
 msgid "No playlist found in %s"
 msgstr ""
 
-#: src/ui/preferences.vala:44 src/ui/preferences.vala:66
+#: src/ui/preferences.vala:42 src/ui/preferences.vala:64
 msgid "Never"
 msgstr ""
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Always"
 msgstr ""
 
-#: src/ui/preferences.vala:44
+#: src/ui/preferences.vala:42
 msgid "Art Only"
 msgstr ""
 
-#: src/ui/preferences.vala:66
+#: src/ui/preferences.vala:64
 msgid "Track"
-msgstr ""
-
-#: src/ui/store-panel.vala:84
-msgid "Playing"
 msgstr ""
 
 #: src/ui/store-panel.vala:89
@@ -555,7 +551,7 @@ msgstr ""
 msgid "Volume %d%%"
 msgstr ""
 
-#: src/ui/window.vala:112
+#: src/ui/window.vala:127
 msgid "Show"
 msgstr ""
 

@@ -457,6 +457,8 @@ namespace G4 {
             private int[] word_offsets = {};
             private uint64[] word_starts = {};
             private uint64[] word_ends = {};
+            /** False for lines without per-word timing (plain LRC). */
+            private bool per_word = true;
             private uint64 eff_end = 0;
 
             private Pango.Layout? _main_layout = null;
@@ -476,6 +478,8 @@ namespace G4 {
             private const double TRANS_GAP = 6;
             private const double EMPHASIS_SCALE = 0.10;
             private const int H_INSET = 16;
+            /* Hover/pressed background grows past the tight text allocation. */
+            private const int HOVER_EXPAND = 8;
 
             public LyricLine (Lyric.Line data, uint index, uint64 fallback_end) {
                 Object (data: data, index: index, fallback_end: fallback_end);
@@ -503,6 +507,10 @@ namespace G4 {
                 }
                 word_offsets[n] = (int) sb.len;
                 text = sb.str;
+
+                /* A plain LRC line becomes a single untimed word: it has
+                 * nothing to wipe across, so it lights up as a whole. */
+                per_word = n > 1 || (n == 1 && words[0].end_time != 0);
 
                 emphasis_anim = new Adw.TimedAnimation (this, 0.0, 1.0, 280,
                     new Adw.CallbackAnimationTarget ((value) => {
@@ -617,6 +625,9 @@ namespace G4 {
             }
 
             private double overall_progress_of (uint64 pos) {
+                if (!per_word) {
+                    return pos >= data.start_time ? 1.0 : 0.0;
+                }
                 if (eff_end <= data.start_time) {
                     return pos >= eff_end ? 1.0 : 0.0;
                 }
@@ -733,11 +744,11 @@ namespace G4 {
                 if (hover || pressed) {
                     double a = pressed ? 0.14 : 0.07;
                     var bounds = Graphene.Rect () {
-                        origin = Graphene.Point () { x = 8, y = 1 },
-                        size = Graphene.Size () { width = w - 16, height = h - 2 }
+                        origin = Graphene.Point () { x = 8, y = -HOVER_EXPAND },
+                        size = Graphene.Size () { width = w - 16, height = h + HOVER_EXPAND * 2 }
                     };
                     Gsk.RoundedRect rr = Gsk.RoundedRect ();
-                    rr.init_from_rect (bounds, 12f);
+                    rr.init_from_rect (bounds, 14f);
                     snapshot.push_rounded_clip (rr);
                     snapshot.append_color (with_alpha (base_c, base_c.alpha * a), bounds);
                     snapshot.pop ();
@@ -844,8 +855,8 @@ namespace G4 {
                 bx = double.MAX;
                 full = true;
 
-                if (n == 0) {
-                    if (position < eff_end) {
+                if (!per_word || n == 0) {
+                    if (position < data.start_time) {
                         full = false;
                         boundary_byte = 0;
                         bx = 0;

@@ -4,6 +4,11 @@
     font-weight: 550;
 }
 
+lyric-view {
+    font-size: 105%;
+    font-weight: 500;
+}
+
 .title-leading {
     font-weight: 500;
 }

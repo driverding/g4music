@@ -51,10 +51,15 @@ endif
 libm_dep = c_compiler.find_library('m', required: false)
 posix_dep = vala_compiler.find_library('posix', required: false)
 
+gee_dep = dependency('gee-0.8')
+gxml_dep = dependency('gxml-0.20', fallback: ['gxml', 'libgxml_dep'])
+
 dependencies = [
   dependency('gstreamer-1.0'),
   dependency('gstreamer-tag-1.0'),
   adw_dep,
+  gee_dep,
+  gxml_dep,
   libm_dep,
   posix_dep,
 ]

@@ -6,5 +6,6 @@
     <file>gtk/play-panel.ui</file>
     <file>gtk/preferences.ui</file>
     <file>gtk/store-panel.ui</file>
+    <file alias="icons/scalable/actions/lyrics-symbolic.svg">gtk/icons/scalable/actions/lyrics-symbolic.svg</file>
   </gresource>
 </gresources>

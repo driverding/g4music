@@ -29,6 +29,13 @@
           </object>
         </child>
         <child type="end">
+          <object class="GtkToggleButton" id="lyric_btn">
+            <property name="icon-name">lyrics-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Lyrics</property>
+            <property name="sensitive">false</property>
+          </object>
+        </child>
+        <child type="end">
           <object class="GtkMenuButton" id="action_btn">
             <property name="icon_name">view-more-symbolic</property>
           </object>
@@ -36,62 +43,87 @@
       </object>
     </child>
     <child>
-      <object class="GtkBox" id="music_box">
+      <object class="GtkStack" id="page_stack">
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>
-        <property name="orientation">vertical</property>
+        <property name="transition-type">crossfade</property>
+        <property name="transition-duration">300</property>
         <child>
-          <object class="GtkImage" id="music_cover">
-            <property name="pixel_size">256</property>
-            <property name="vexpand">true</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkOverlay">
-            <property name="margin_start">16</property>
-            <property name="margin_end">16</property>
-            <property name="margin_top">8</property>
-            <child type="overlay">
-              <object class="GtkLabel" id="initial_label">
-                <property name="halign">center</property>
-                <property name="visible">false</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox">
+          <object class="GtkStackPage">
+            <property name="name">music</property>
+            <property name="child">
+              <object class="GtkBox" id="music_box">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="G4StableLabel" id="music_title">
-                    <property name="halign">center</property>
-                    <property name="marquee">true</property>
-                    <style>
-                      <class name="title-large"/>
-                    </style>
+                  <object class="GtkImage" id="music_cover">
+                    <property name="pixel_size">256</property>
+                    <property name="vexpand">true</property>
                   </object>
                 </child>
                 <child>
-                  <object class="G4StableLabel" id="music_artist">
-                    <property name="halign">center</property>
-                    <property name="margin_top">2</property>
-                    <property name="marquee">true</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="G4StableLabel" id="music_album">
-                    <property name="halign">center</property>
-                    <property name="marquee">true</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
+                  <object class="GtkOverlay">
+                    <property name="margin_start">16</property>
+                    <property name="margin_end">16</property>
+                    <property name="margin_top">8</property>
+                    <child type="overlay">
+                      <object class="GtkLabel" id="initial_label">
+                        <property name="halign">center</property>
+                        <property name="visible">false</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="G4StableLabel" id="music_title">
+                            <property name="halign">center</property>
+                            <property name="marquee">true</property>
+                            <style>
+                              <class name="title-large"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="G4StableLabel" id="music_artist">
+                            <property name="halign">center</property>
+                            <property name="margin_top">2</property>
+                            <property name="marquee">true</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="G4StableLabel" id="music_album">
+                            <property name="halign">center</property>
+                            <property name="marquee">true</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
         </child>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">lyric</property>
+            <property name="child">
+              <object class="G4LyricPanel" id="lyric_panel"/>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="bar_box">
+        <property name="orientation">vertical</property>
+        <property name="hexpand">true</property>
       </object>
     </child>
   </template>

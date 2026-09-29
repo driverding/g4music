@@ -28,6 +28,21 @@
     ],
     "modules": [
         {
+            "name": "gxml",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocs=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gxml.git",
+                    "tag": "0.20.4",
+                    "commit": "15054b171e6e52338c4b92cba18416505d0764f6"
+                }
+            ]
+        },
+        {
             "name": "g4music",
             "builddir": true,
             "buildsystem": "meson",

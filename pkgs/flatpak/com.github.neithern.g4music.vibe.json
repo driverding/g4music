@@ -1,0 +1,67 @@
+{
+    "app-id": "com.github.neithern.g4music.vibe",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "50",
+    "sdk": "org.gnome.Sdk",
+    "command": "g4music-vibe",
+    "finish-args": [
+        "--device=dri",
+        "--share=ipc",
+        "--share=network",
+        "--socket=fallback-x11",
+        "--socket=pulseaudio",
+        "--socket=wayland",
+        "--filesystem=xdg-music",
+        "--talk-name=org.gtk.vfs.*"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "/share/vala",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "gxml",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocs=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gxml.git",
+                    "tag": "0.20.4",
+                    "commit": "15054b171e6e52338c4b92cba18416505d0764f6"
+                }
+            ]
+        },
+        {
+            "name": "g4music-vibe",
+            "builddir": true,
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../../",
+                    "deny": [
+                        ".git",
+                        ".git/*",
+                        "build",
+                        "build/*",
+                        ".flatpak-builder",
+                        ".flatpak-builder/*",
+                        "subprojects/gxml",
+                        "subprojects/gxml/*"
+                    ]
+                }
+            ]
+        }
+    ]
+}

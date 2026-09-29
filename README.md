@@ -1,7 +1,7 @@
 # Gapless Vibe
 A fork of Gapless, supporting lyric and playtime spectrum through vibe coding.
 
-<img src="demo.webp">
+<img src="demo.webp" width="466">
 
 
 

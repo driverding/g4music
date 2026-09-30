@@ -20,7 +20,7 @@ msgstr ""
 
 #: data/app.desktop.in:2 data/app.metainfo.xml.in:4 src/application.vala:283
 #: src/main.vala:24
-msgid "Gapless"
+msgid "Gapless Vibe"
 msgstr ""
 
 #: data/app.desktop.in:3

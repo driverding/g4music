@@ -28,6 +28,7 @@ namespace G4 {
     /**
      * A minimal LRC parser based on regex.
      * Repeating Lyric is NOT supported. Standard A2 extension is supported.
+     * Two lines sharing one timestamp are the lyric and its translation.
      */
     public class LrcParser: Object {
         private Regex offset_regex = /\[offset:([+-]?\d+)\]/;
@@ -49,6 +50,7 @@ namespace G4 {
             }
 
             var lines = new Gee.ArrayList<Lyric.Line> ();
+            Lyric.Line? last = null;
             MatchInfo line_match;
             line_regex.match (str, 0, out line_match);
             while (line_match.matches ()) {
@@ -69,7 +71,22 @@ namespace G4 {
                     words.add (new Lyric.Word (line_start_time, line_text));
                 }
 
-                lines.add (new Lyric.Line (line_start_time, words));
+                var plain = new StringBuilder ();
+                foreach (var word in words) {
+                    plain.append (word.text);
+                }
+
+                var previous = last;
+                if (line_text.length > 0 && previous != null
+                        && ((!) previous).start_time == line_start_time
+                        && ((!) previous).translation == null) {
+                    ((!) previous).translation = plain.str;
+                } else {
+                    var line = new Lyric.Line (line_start_time, words);
+                    lines.add (line);
+                    last = line;
+                }
+
                 line_match.next ();
             }
 

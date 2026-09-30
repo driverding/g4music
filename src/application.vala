@@ -1,6 +1,7 @@
 namespace G4 {
 
     public const string ICON_RESOURCE_PATH = "/com/github/neithern/g4music/icons";
+    public const string STYLE_RESOURCE_PATH = "/com/github/neithern/g4music/style.css";
 
     public class Application : Adw.Application {
         private ActionHandles? _actions = null;
@@ -40,8 +41,15 @@ namespace G4 {
             base.startup ();
 
             var display = Gdk.Display.get_default ();
-            if (display != null)
+            if (display != null) {
                 Gtk.IconTheme.get_for_display ((!) display).add_resource_path (ICON_RESOURCE_PATH);
+                //  The theme padding of grid children is cancelled by style.css,
+                //  which nothing else loads automatically
+                var provider = new Gtk.CssProvider ();
+                provider.load_from_resource (STYLE_RESOURCE_PATH);
+                Gtk.StyleContext.add_provider_for_display ((!) display, provider,
+                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            }
 
             //  Must load tag cache after the app register (GLib init), to make sort works
             _loader.load_tag_cache ();

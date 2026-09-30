@@ -26,6 +26,7 @@
         "*.la",
         "*.a"
     ],
+    "separate-locales": false,
     "modules": [
         {
             "name": "gxml",
@@ -49,17 +50,7 @@
             "sources": [
                 {
                     "type": "dir",
-                    "path": "../../",
-                    "deny": [
-                        ".git",
-                        ".git/*",
-                        "build",
-                        "build/*",
-                        ".flatpak-builder",
-                        ".flatpak-builder/*",
-                        "subprojects/gxml",
-                        "subprojects/gxml/*"
-                    ]
+                    "path": "../../"
                 }
             ]
         }
